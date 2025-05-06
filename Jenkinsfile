@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'  // Make sure 'Maven' matches Jenkins' Global Tool Configuration
+        maven 'Maven'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/shar4440/MyMavenApp.git'
+                git branch: 'master', url: 'https://github.com/shar4440/RbdgtcApp.git'
             }
         }
 
@@ -24,9 +24,16 @@ pipeline {
             }
         }
 
+        stage('Debug Paths') {
+            steps {
+                sh 'echo "Current directory: $(pwd)"'
+                sh 'ls -l'
+                sh 'ls -l target'
+            }
+        }
+
         stage('Run Application') {
             steps {
-                // Use the correct JAR filename
                 sh 'java -jar target/RbdgtcApp-1.0-SNAPSHOT.jar'
             }
         }
@@ -34,10 +41,10 @@ pipeline {
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo '✅ Build and JAR executed successfully!'
         }
         failure {
-            echo 'Build failed!'
+            echo '❌ Build or execution failed. Check logs.'
         }
     }
 }
